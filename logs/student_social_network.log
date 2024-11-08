@@ -1,0 +1,81 @@
+2024-11-08T06:47:42.648-07:00 ERROR 5144 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.org.springframework.web' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.org.springframework.web
+    Value: "DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs"
+    Origin: class path resource [application.properties] - 20:39
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
+2024-11-08T06:48:12.427-07:00 ERROR 16352 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.org.springframework.web' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.org.springframework.web
+    Value: "DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs"
+    Origin: class path resource [application.properties] - 20:39
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
+2024-11-08T06:52:35.143-07:00 ERROR 21500 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.org.springframework.web' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.org.springframework.web
+    Value: "DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs"
+    Origin: class path resource [application.properties] - 20:39
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.DEBUG  # DEBUG pour voir les dï¿½tails des requï¿½tes HTTP dans les logs)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
