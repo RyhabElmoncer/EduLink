@@ -1,4 +1,4 @@
-package com.RyhabExemple.security.auth;
+package com.EduLink.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

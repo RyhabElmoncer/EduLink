@@ -1,4 +1,4 @@
-package com.venta.projet.config;
+package com.EduLink.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

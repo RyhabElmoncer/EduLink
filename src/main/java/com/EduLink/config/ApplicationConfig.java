@@ -1,8 +1,8 @@
-package com.venta.projet.config;
+package com.EduLink.config;
 
 
-import com.venta.projet.Repository.UserRepository;
-import com.venta.projet.auditing.ApplicationAuditAware;
+import com.EduLink.auditing.ApplicationAuditAware;
+import com.EduLink.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

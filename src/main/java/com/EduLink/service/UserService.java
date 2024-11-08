@@ -4,7 +4,6 @@ import com.EduLink.Models.User;
 import java.util.List;
 
 public interface UserService {
-    User registerUser(User user);
-    User findUserByEmail(String email);
+    void deleteUser(String userId);
     List<User> getAllUsers();
 }

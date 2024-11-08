@@ -1,6 +1,7 @@
-package com.RyhabExemple.security.token;
+package com.EduLink.token;
 
-import com.RyhabExemple.security.user.User;
+
+import com.EduLink.Models.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

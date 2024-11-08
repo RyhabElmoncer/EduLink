@@ -9,7 +9,7 @@ public class Post {
     @Id
     private String id;
     private String content;
-    private String imageUrl;
+    private File imageUrl;
     private String userId; // Référence à l'auteur de la publication
     private List<String> tags;
     private List<String> likes;

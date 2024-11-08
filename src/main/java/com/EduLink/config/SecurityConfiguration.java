@@ -1,4 +1,4 @@
-package com.venta.projet.config;
+package com.EduLink.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-config.setAllowedOrigins(List.of("http://51.68.119.170:8888", "http://venta.com.tn/","http://venta.tn/", "http://localhost:57787","http://localhost:4200/"));
+config.setAllowedOrigins(List.of("http://localhost:4200/"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "*")); // En-têtes autorisés
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Méthodes HTTP autorisées
 

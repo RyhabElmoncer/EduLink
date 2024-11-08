@@ -1,0 +1,20 @@
+Test the POST /api/v1/auth/register Endpoint
+This endpoint is used to register a new user.
+
+Method: POST
+URL: http://localhost:8580/api/v1/auth/register
+
+{
+  "email": "Ali@gmail.com",
+  "firstname": "Test",
+  "lastname": "User",
+  "password": "password123",
+  "role": "User"
+}
+Method: POST
+URL: http://localhost:8580/api/v1/auth/authenticate
+
+{
+  "email": "Ali@gmail.com",
+  "password": "password123"
+}

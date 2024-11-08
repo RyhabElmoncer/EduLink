@@ -1,4 +1,4 @@
-package com.RyhabExemple.security.auth;
+package com.EduLink.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ public class AuthenticationController {
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody RegisterRequest request
   ) {
-    return ResponseEntity.ok(service.register(request));
+    return ResponseEntity.ok(service.signup(request));
   }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(

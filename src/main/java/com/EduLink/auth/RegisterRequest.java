@@ -1,6 +1,6 @@
-package com.RyhabExemple.security.auth;
+package com.EduLink.auth;
 
-import com.RyhabExemple.security.user.Role;
+import com.EduLink.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

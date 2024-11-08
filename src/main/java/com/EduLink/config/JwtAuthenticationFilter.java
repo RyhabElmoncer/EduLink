@@ -1,6 +1,6 @@
-package com.venta.projet.config;
+package com.EduLink.config;
 
-import com.venta.projet.token.TokenRepository;
+import com.EduLink.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

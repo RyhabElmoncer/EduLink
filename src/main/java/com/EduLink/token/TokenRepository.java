@@ -1,4 +1,4 @@
-package com.RyhabExemple.security.token;
+package com.EduLink.token;
 
 import java.util.List;
 import java.util.Optional;

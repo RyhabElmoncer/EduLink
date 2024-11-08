@@ -1,6 +1,6 @@
-package com.RyhabExemple.security.auditing;
+package com.EduLink.auditing;
 
-import com.RyhabExemple.security.user.User;
+import com.EduLink.Models.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

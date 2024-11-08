@@ -1,4 +1,4 @@
-package com.RyhabExemple.security.token;
+package com.EduLink.token;
 
 public enum TokenType {
   BEARER

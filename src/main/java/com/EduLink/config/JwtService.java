@@ -1,6 +1,6 @@
-package com.venta.projet.config;
+package com.EduLink.config;
 
-import com.venta.projet.Model.User;
+import com.EduLink.Models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,44 +28,41 @@ public class JwtService {
   @Value("${application.security.jwt.refresh-token.expiration}")
   private long refreshExpiration;
 
-
+  // Extract claim based on given function
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
     final Claims claims = extractAllClaims(token);
     return claimsResolver.apply(claims);
   }
+
+  // Extract username from the token
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
   }
 
+  // Generate JWT token for the user
   public String generateToken(UserDetails userDetails) {
     User user = (User) userDetails;
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("id", user.getId());
     extraClaims.put("email", user.getEmail());
-    extraClaims.put("codePostal", user.getCodePostal());
     extraClaims.put("firstName", user.getFirstName());
     extraClaims.put("lastName", user.getLastName());
-    extraClaims.put("phone", user.getPhone());
-    extraClaims.put("longitude", user.getLongitude());
-    extraClaims.put("latitude", user.getLatitude());
-    extraClaims.put("userStatus", user.getUserStatus());
     extraClaims.put("role", user.getRole());
-    extraClaims.put("matriculeLivreur", user.getMatriculeLivreur());
-    extraClaims.put("matriculeSousAdmin", user.getMatriculeSousAdmin());
-    extraClaims.put("commissionTotale", user.getCommissionTotale());
-    extraClaims.put("revenueMensuelLivreur", user.getRevenueMensuelLivreur());
-
 
     return generateToken(extraClaims, userDetails);
   }
+
+  // Generate token with extra claims
   public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
+  // Generate refresh token
   public String generateRefreshToken(UserDetails userDetails) {
     return buildToken(new HashMap<>(), userDetails, refreshExpiration);
   }
 
+  // Build JWT token with extra claims and expiration
   private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
     return Jwts.builder()
             .setClaims(extraClaims)
@@ -76,19 +73,23 @@ public class JwtService {
             .compact();
   }
 
+  // Validate the token
   public boolean isTokenValid(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
     return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
   }
 
+  // Check if the token is expired
   private boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }
 
+  // Extract expiration date from token
   private Date extractExpiration(String token) {
     return extractClaim(token, Claims::getExpiration);
   }
 
+  // Extract all claims from the token
   private Claims extractAllClaims(String token) {
     return Jwts.parserBuilder()
             .setSigningKey(getSignInKey())
@@ -97,6 +98,7 @@ public class JwtService {
             .getBody();
   }
 
+  // Get the signing key from the secret key
   private Key getSignInKey() {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(keyBytes);

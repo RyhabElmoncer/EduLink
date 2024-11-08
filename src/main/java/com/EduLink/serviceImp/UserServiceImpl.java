@@ -12,14 +12,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User registerUser(User user) {
-        return userRepository.save(user);
+    public void deleteUser(String userId) {
+        // Vérifiez si l'utilisateur existe
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        // Supprimez l'utilisateur
+        userRepository.delete(existingUser);
     }
 
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 
     @Override
     public List<User> getAllUsers() {
