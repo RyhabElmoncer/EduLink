@@ -1,6 +1,6 @@
 package com.EduLink.config;
-
 import com.EduLink.token.TokenRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,64 +25,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final UserDetailsService userDetailsService;
   private final TokenRepository tokenRepository;
 
-
   @Override
-  protected void doFilterInternal(
-          @NonNull HttpServletRequest request,
-          @NonNull HttpServletResponse response,
-          @NonNull FilterChain filterChain
-  ) throws ServletException, IOException {
-    if (request.getServletPath().contains("/api/v1/auth")) {
+  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                                  @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+    String requestPath = request.getServletPath();
+
+    if (requestPath.matches("^(/api/v1/auth/(authenticate|register)).*")) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    // Récupérer le header Authorization
+    // Vérification du token JWT
     final String authHeader = request.getHeader("Authorization");
     final String jwt;
     final String userEmail;
 
-    // Vérifier que le header Authorization est présent et commence par "Bearer "
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    // Extraire le JWT du header Authorization
     jwt = authHeader.substring(7);
-    // Extraire le nom d'utilisateur du JWT
     userEmail = jwtService.extractUsername(jwt);
 
-    // Si un nom d'utilisateur a été extrait et que le contexte de sécurité n'est pas encore authentifié
     if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      // Charger les détails de l'utilisateur par son nom d'utilisateur
       UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-      // Vérifier si le token est valide (non expiré et non révoqué)
-      var isTokenValid = tokenRepository.findByToken(jwt)
-              .map(t -> !t.isExpired() && !t.isRevoked())
+      boolean isTokenValid = tokenRepository.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked())
               .orElse(false);
 
-      // Si le JWT et les détails de l'utilisateur sont valides
       if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
-        // Créer un token d'authentification
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-        );
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                null, userDetails.getAuthorities());
 
-        // Définir les détails de l'authentification à partir de la requête
-        authToken.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        // Mettre à jour le contexte de sécurité avec le token d'authentification
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     }
 
-    // Continuer la chaîne de filtres
     filterChain.doFilter(request, response);
   }
 }
