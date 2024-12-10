@@ -181,7 +181,7 @@ public class AuthenticationService {
       revokeAllUserTokens(user);
       saveUserToken(user, jwtToken);
 
-      if (user.getRole() == Role.User) {
+      if (user.getRole() == Role.STUDENT) {
         // notificationService.fetchAndSendUnreadNotifications(user.getId());
       }
 

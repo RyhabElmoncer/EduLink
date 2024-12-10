@@ -34,7 +34,8 @@ public class User implements UserDetails {
     private String profileImage;     // URL de l'image de profil
     private String address;          // Adresse de l'utilisateur
     private String fieldOfStudy;     // Domaine d'études
-
+    @DBRef
+    private List<Group> groups;
     @DBRef
     private List<Token> tokens;
 
