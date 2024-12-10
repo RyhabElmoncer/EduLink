@@ -8,7 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +23,13 @@ public class Group {
     private String description;
 
     @DBRef
-    private List<User> members;
+    private List<User> members = new ArrayList<>();
 
     @DBRef
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
+
+    // Constructor to initialize only the ID
+    public Group(String id) {
+        this.id = id;
+    }
 }
-
-

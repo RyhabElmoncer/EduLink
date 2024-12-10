@@ -39,7 +39,9 @@ public class User implements UserDetails {
     private List<Group> groups;
     @DBRef
     private List<Token> tokens;
-
+    public User(String id) {
+        this.id = id;
+    }
     @Override
     public String getPassword() {
         return password;
