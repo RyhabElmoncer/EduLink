@@ -33,7 +33,10 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
     }
-
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
+    }
     // Ajouter une image de profil
     public String addProfileImage(String userId, MultipartFile image) {
         Optional<User> userOptional = userRepository.findById(userId);
