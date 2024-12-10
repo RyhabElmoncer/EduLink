@@ -1,12 +1,22 @@
 package com.EduLink.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class MessageDTO {
-    private String senderId;
-    private String recipientId; // Ou null pour les messages de groupe
-    private String groupId; // Groupe cible (null pour message privé)
+    private String id;
     private String content;
+    private long timestamp;
+    private boolean isRead;
+    private UserDTO sender;
+    private UserDTO recipient;
+    private String groupId;
 }
+
 

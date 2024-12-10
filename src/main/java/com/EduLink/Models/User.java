@@ -33,7 +33,8 @@ public class User implements UserDetails {
     private String bio;              // Biographie de l'utilisateur
     private String profileImage;     // URL de l'image de profil
     private String address;          // Adresse de l'utilisateur
-    private String fieldOfStudy;     // Domaine d'études
+    private String fieldOfStudy;
+
     @DBRef
     private List<Group> groups;
     @DBRef

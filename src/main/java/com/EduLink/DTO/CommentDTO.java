@@ -1,10 +1,16 @@
 package com.EduLink.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CommentDTO {
-    private String userId;            // ID de l'utilisateur
-    private String text;              // Texte du commentaire
-    private long timestamp;           // Date de création du commentaire
+    private String userId;
+    private String text;
+    private long timestamp;
 }

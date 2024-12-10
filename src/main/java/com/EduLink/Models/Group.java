@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +21,10 @@ public class Group {
     private String description;
 
     @DBRef
-    private List<User> members; // Liste des membres du groupe
+    private List<User> members;
 
     @DBRef
-    private List<Message> messages; // Messages du groupe
+    private List<Message> messages;
 }
+
 
