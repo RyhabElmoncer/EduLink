@@ -42,32 +42,24 @@ public class AuthenticationService {
 
   public AuthenticationResponse signup(RegisterRequest request) {
     if (repository.existsByEmail(request.getEmail())) {
-      //throw new IllegalArgumentException("L'email est déjà utilisé");
-      System.out.println("l email deja exist");
+      throw new IllegalArgumentException("L'email est déjà utilisé");
     }
 
     var user = User.builder()
             .firstName(request.getFirstname())
             .lastName(request.getLastname())
             .email(request.getEmail())
-
             .password(passwordEncoder.encode(request.getPassword()))
             .role(request.getRole())
-
-           // Default status
             .build();
-    var savedUser = repository.save(user);
 
-    // Send verification email
-    sendVerificationEmail(user);
+    repository.save(user);
 
     var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveUserToken(savedUser, jwtToken);
-
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
-            .refreshToken(refreshToken)
+            .refreshToken(null)
+            .message("Inscription réussie ! Vous pouvez maintenant vous connecter.")
             .build();
   }
 

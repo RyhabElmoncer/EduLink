@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fil d'Actualité</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header>
+    <h1>Fil d’Actualité</h1>
+    <nav>
+        <a href="/messages">Messagerie</a>
+        <a href="/notifications">Notifications</a>
+    </nav>
+</header>
+<main>
+    <div th:each="post : ${posts}">
+        <div class="post-card">
+            <h3 th:text="${post.title}">Titre du Post</h3>
+            <p th:text="${post.content}">Contenu</p>
+            <img th:src="${post.image}" alt="Image">
+            <div>
+                <button>J'aime</button>
+                <button>Commenter</button>
+                <button>Partager</button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

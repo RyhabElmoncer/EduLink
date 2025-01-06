@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #007bff, #ffffff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1em;
+            color: #007bff;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.8em 1.5em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 1em;
+        }
+
+        p {
+            margin-top: 1em;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Connexion</h2>
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <p th:if="${error}" th:text="${error}" class="error-message"></p>
+    <form th:action="@{/api/v1/auth/authenticate}" method="post">
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+
+        <button type="submit">Se connecter</button>
+    </form>
+    <p><a href="/inscription">Pas encore inscrit ? Créez un compte ici.</a></p>
+</div>
+</body>
+</html>

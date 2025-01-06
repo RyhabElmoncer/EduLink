@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background: #007bff;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+.post-card {
+    border: 1px solid #ddd;
+    margin: 1em 0;
+    padding: 1em;
+    background: #f9f9f9;
+}
+
+.post-card img {
+    max-width: 100%;
+    height: auto;
+}

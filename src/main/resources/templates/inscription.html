@@ -1,22 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #343a40;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h2>Inscription</h2>
-<form th:action="@{/register}" method="post">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required="required" th:value="${email}">
-    <br>
-    <label for="password">Mot de passe:</label>
-    <input type="password" id="password" name="password" required="required">
-    <br>
-    <label for="confirmPassword">Confirmer le mot de passe:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required="required">
-    <br>
-    <button type="submit">S'inscrire</button>
-</form>
-<p><a href="/login">Déjà un compte ? Connectez-vous ici.</a></p>
+<div class="container">
+    <div class="form-container">
+        <h2>Inscription</h2>
+        <form th:action="@{/api/v1/auth/register}" method="post" novalidate>
+            <div class="form-group">
+                <label for="firstname">Prénom</label>
+                <input type="text" class="form-control" id="firstname" name="firstname" required="required" placeholder="Entrez votre prénom">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Nom</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" required="required" placeholder="Entrez votre nom">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required="required" placeholder="Entrez votre email">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" class="form-control" id="password" name="password" required="required" placeholder="Entrez un mot de passe">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmer le mot de passe</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required="required" placeholder="Confirmez votre mot de passe">
+            </div>
+            <div class="form-group">
+                <label for="role">Rôle</label>
+                <select class="form-control" id="role" name="role">
+
+                    <option value="STUDENT" selected>Etudiant</option>
+                    <option value="TEACHER">Prof</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+        </form>
+        <p class="text-center mt-3">
+            <a href="/login">Déjà un compte ? Connectez-vous ici.</a>
+        </p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
