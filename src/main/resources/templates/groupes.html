@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Groupes de Discussion</title>
+</head>
+<body>
+<h2>Groupes de Discussion</h2>
+<ul>
+    <li th:each="group : ${groups}">
+        <a th:href="@{/group/{id}(id=${group.id})}" th:text="${group.name}">Nom du groupe</a>
+    </li>
+</ul>
+<form th:action="@{/group}" method="post">
+    <input type="text" name="name" placeholder="Nom du groupe" required="required">
+    <button type="submit">Créer un groupe</button>
+</form>
+</body>
+</html>

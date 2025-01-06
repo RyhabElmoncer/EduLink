@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mon Profil</title>
+</head>
+<body>
+<h2>Profil de l'utilisateur</h2>
+<form th:action="@{/profile}" method="post">
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" th:value="${user.name}" required="required">
+    <br>
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" th:value="${user.email}" required="required">
+    <br>
+    <label for="bio">Biographie :</label>
+    <textarea id="bio" name="bio" th:text="${user.bio}"></textarea>
+    <br>
+    <label for="domaine">Domaine d'études :</label>
+    <input type="text" id="domaine" name="domaine" th:value="${user.domaine}">
+    <br>
+    <label for="profileImage">Image de profil :</label>
+    <input type="file" id="profileImage" name="profileImage">
+    <br>
+    <button type="submit">Mettre à jour</button>
+</form>
+<p><a href="/logout">Se déconnecter</a></p>
+</body>
+</html>

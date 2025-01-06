@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Messagerie</title>
+</head>
+<body>
+<h2>Messagerie Privée</h2>
+<div th:each="message : ${messages}">
+    <p><strong th:text="${message.sender.name}"></strong>: <span th:text="${message.content}"></span></p>
+</div>
+<form th:action="@{/message}" method="post">
+    <textarea name="content" placeholder="Écrivez un message..."></textarea>
+    <br>
+    <button type="submit">Envoyer</button>
+</form>
+</body>
+</html>

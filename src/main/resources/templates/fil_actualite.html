@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fil d'Actualité</title>
+</head>
+<body>
+<h2>Fil d'Actualité</h2>
+<form th:action="@{/post}" method="post">
+    <textarea name="content" placeholder="Partagez quelque chose..." required="required"></textarea>
+    <br>
+    <button type="submit">Publier</button>
+</form>
+
+<div th:each="post : ${posts}">
+    <div>
+        <h3 th:text="${post.author.name}"></h3>
+        <p th:text="${post.content}"></p>
+        <div>
+            <button th:onclick="'like(' + ${post.id} + ')'" th:text="${post.likes}">J'aime</button>
+            <a href="/post/{id}/comments" th:text="'Commentaires (' + ${post.comments.size()} + ')'" th:href="@{/post/{id}/comments(id=${post.id})}">Commentaires</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
