@@ -1,30 +1,201 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fil d'Actualité</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #343a40;
+            cursor: pointer;
+        }
+        main {
+            display: flex;
+            margin: 20px;
+        }
+        .posts-container {
+            flex: 3;
+            margin-right: 20px;
+        }
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .post-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .post-card .actions button {
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .right-menu {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .menu-item {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .menu-item i {
+            font-size: 20px;
+            color: #007bff;
+            margin-right: 10px;
+        }
+        .menu-item a {
+            text-decoration: none;
+            color: #343a40;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .menu-item a:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <header>
-    <h1>Fil d’Actualité</h1>
-    <nav>
-        <a href="/messages">Messagerie</a>
-        <a href="/notifications">Notifications</a>
-    </nav>
+    <h1><i class="fas fa-newspaper"></i> Fil d'Actualité</h1>
+    <div style="display: flex; align-items: center; width: 100%;">
+        <!-- Barre de recherche -->
+        <form method="get" action="/search" style="flex: 1; margin-right: 20px;">
+            <div class="input-group">
+                <input type="text" name="query" class="form-control" placeholder="Rechercher..." aria-label="Rechercher" required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+        <!-- Liens de navigation -->
+        <nav>
+            <a href="/messages"><i class="fas fa-envelope"></i></a>
+            <a href="/notifications"><i class="fas fa-bell"></i></a>
+        </nav>
+    </div>
 </header>
+
 <main>
-    <div th:each="post : ${posts}">
-        <div class="post-card">
-            <h3 th:text="${post.title}">Titre du Post</h3>
-            <p th:text="${post.content}">Contenu</p>
-            <img th:src="${post.image}" alt="Image">
-            <div>
-                <button>J'aime</button>
-                <button>Commenter</button>
-                <button>Partager</button>
+    <div class="posts-container">
+        <!-- Formulaire pour ajouter une publication -->
+        <div class="form-container">
+            <form method="post" action="/addPost" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Titre</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Contenu</label>
+                    <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" name="image" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-primary">Publier</button>
+            </form>
+        </div>
+
+        <!-- Liste des publications -->
+        <div th:each="post : ${posts}">
+            <div class="post-card">
+                <h3 th:text="${post.title}">Titre du Post</h3>
+                <p th:text="${post.content}">Contenu</p>
+                <img th:src="${post.image}" alt="Image du Post">
+                <div class="actions mt-3">
+                    <button class="btn btn-success" th:onclick="|location.href='/updatePost/{post.id}'|"><i class="fas fa-edit"></i> Modifier</button>
+                    <button class="btn btn-danger" th:onclick="|location.href='/deletePost/{post.id}'|"><i class="fas fa-trash"></i> Supprimer</button>
+                    <button class="btn btn-info" th:onclick="|location.href='/post/{post.id}'|"><i class="fas fa-eye"></i> Voir Détails</button>
+                </div>
+                <div class="likes-comments mt-3">
+                    <p><strong>Likes:</strong> <span th:text="${post.likes}">0</span></p>
+                    <form th:action="@{/addLike/{post.id}}" th:object="${post}" method="post">
+                        <button class="btn btn-sm btn-primary" type="submit">Ajouter Like</button>
+                    </form>
+
+                    <div th:each="comment : ${post.comments}">
+                        <p><strong th:text="${comment.authorName}">Commentaire</strong>: <span th:text="${comment.text}">Commentaire texte</span></p>
+                    </div>
+
+                    <form th:action="@{/addComment/{post.id}}" method="post">
+                        <textarea name="commentText" class="form-control" rows="2" required placeholder="Ajouter un commentaire..."></textarea>
+                        <button class="btn btn-sm btn-secondary mt-2" type="submit">Ajouter Commentaire</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Menu à droite -->
+    <aside class="right-menu">
+        <div class="menu-item">
+            <i class="fas fa-user-circle"></i>
+            <a href="/profile">Voir Profil</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
+            <a href="/settings">Paramètres</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </aside>
 </main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
