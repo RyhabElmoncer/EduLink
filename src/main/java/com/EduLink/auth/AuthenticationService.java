@@ -58,8 +58,6 @@ public class AuthenticationService {
             .build();
     var savedUser = repository.save(user);
 
-    // Send verification email
-    sendVerificationEmail(user);
 
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
@@ -71,95 +69,7 @@ public class AuthenticationService {
             .build();
   }
 
-  private void sendVerificationEmail(User user) {
-    // Generate verification token
-    String verificationToken = jwtService.generateToken(user); // Modify as needed for email verification
 
-    String verificationLink = "http://localhost:8088/api/v1/auth/verify-email?token=" + verificationToken;
-
-    String subject = "Verify your email";
-    String content = String.format("Dear %s %s,\n\nPlease click the link below to verify your email:\n%s\n\nBest regards,\nYour Team",
-            user.getFirstName(), user.getLastName(), verificationLink);
-
-    try {
-      MimeMessage message = emailSender.createMimeMessage();
-      MimeMessageHelper helper = new MimeMessageHelper(message, true);
-      helper.setTo(user.getEmail());
-      helper.setSubject(subject);
-      helper.setText(content, true);
-      emailSender.send(message);
-    } catch (MessagingException e) {
-      throw new RuntimeException("Failed to send verification email", e);
-    }
-  }
-  public void forgotPassword(String email) throws MessagingException {
-    User user = repository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
-
-    String resetToken = jwtService.generateToken(user);
-    String resetLink = "http://localhost:4200/reset-password?token=" + resetToken;
-
-    String subject = "Reset your password";
-    String content = String.format("Dear %s %s,\n\nPlease click the link below to reset your password:\n%s\n\nBest regards,\nYour Team",
-            user.getFirstName(), user.getLastName(), resetLink);
-
-    MimeMessage message = emailSender.createMimeMessage();
-    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-    helper.setTo(email);
-    helper.setSubject(subject);
-    helper.setText(content, true);
-
-    emailSender.send(message);
-  }
-
-  public void resetPassword(String token, String newPassword) {
-    String userEmail = jwtService.extractUsername(token);
-    User user = repository.findByEmail(userEmail)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
-
-    if (jwtService.isTokenValid(token, user)) {
-      user.setPassword(passwordEncoder.encode(newPassword));
-      repository.save(user);
-    } else {
-      throw new IllegalArgumentException("Invalid or expired token");
-    }
-  }
-
-  public AuthenticationResponse authenticateWithFirebase(String firebaseToken) throws FirebaseAuthException {
-    if (firebaseToken == null || !firebaseToken.startsWith("Bearer ")) {
-      throw new IllegalArgumentException("Invalid Firebase token format");
-    }
-
-    String token = firebaseToken.substring(7);
-
-    FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-    String uid = decodedToken.getUid();
-    String email = decodedToken.getEmail();
-    String fullName = decodedToken.getName();
-    String[] nameParts = fullName != null ? fullName.split(" ", 2) : new String[]{"", ""};
-    String firstName = nameParts.length > 0 ? nameParts[0] : "";
-    String lastName = nameParts.length > 1 ? nameParts[1] : "";
-
-    User user = repository.findByEmail(email).orElseGet(() -> {
-      User newUser = new User();
-      newUser.setEmail(email);
-      newUser.setFirstName(firstName);
-      newUser.setLastName(lastName);
-      newUser.setPassword(passwordEncoder.encode(uid));
-      return repository.save(newUser);
-    });
-
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    revokeAllUserTokens(user);
-    saveUserToken(user, jwtToken);
-
-    return AuthenticationResponse.builder()
-            .accessToken(jwtToken)
-            .refreshToken(refreshToken)
-            .build();
-  }
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     try {
       authenticationManager.authenticate(
@@ -171,10 +81,6 @@ public class AuthenticationService {
       var user = repository.findByEmail(request.getEmail())
               .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + request.getEmail()));
 
-      /*// Check if the user has the role ADMIN or SOUS_ADMIN
-      if (user.getRole() != Role.ADMIN && user.getRole() != Role.SOUS_ADMIN) {
-        throw new AccessDeniedException("Access restricted to ADMIN and SOUS_ADMIN roles");
-      }*/
 
       var jwtToken = jwtService.generateToken(user);
       var refreshToken = jwtService.generateRefreshToken(user);
@@ -182,7 +88,6 @@ public class AuthenticationService {
       saveUserToken(user, jwtToken);
 
       if (user.getRole() == Role.STUDENT) {
-        // notificationService.fetchAndSendUnreadNotifications(user.getId());
       }
 
       return AuthenticationResponse.builder()
