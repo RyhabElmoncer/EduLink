@@ -26,13 +26,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    // URLs accessibles sans authentification
+
+    // Liste des URL accessibles sans authentification
     private static final String[] WHITE_LIST_URL = {
             "/api/v1/auth/authenticate",
-            "/api/v1/auth/register" ,
-"/api/v1/auth/publications"
-
+            "/api/v1/auth/register",
+            "/api/v1/auth/publications",
+            "/images/**",
+            "/swagger-ui/**",        // Swagger UI
+            "/v3/api-docs/**",       // OpenAPI docs
+            "/h2-console/**",        // Console H2 (dev)
+            "/static/**",            // Fichiers statiques
+            "/css/**", "/js/**", "/assets/**"  // Ressources front-end
     };
+
+
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
@@ -44,8 +52,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable) // Désactive CSRF, non nécessaire pour les API stateless
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers(WHITE_LIST_URL).permitAll() // Permet l'accès non authentifié pour les URLs dans la liste blanche
-
+                                .requestMatchers(WHITE_LIST_URL).permitAll() // Permet l'accès non authentifié pour les URL dans la liste blanche
                                 .anyRequest().authenticated() // Toute autre requête nécessite une authentification
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS)) // Sessions stateless (JWT)
@@ -57,7 +64,6 @@ public class SecurityConfiguration {
                                 .addLogoutHandler(logoutHandler) // Gestionnaire de déconnexion personnalisé
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()) // Nettoyage du contexte
                 );
-
         return http.build();
     }
 
@@ -65,7 +71,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOrigins(List.of("http://localhost:4200")); // Frontend Angular
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "*")); // En-têtes autorisés
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Méthodes HTTP autorisées
 
