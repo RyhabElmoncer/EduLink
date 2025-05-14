@@ -24,7 +24,7 @@ public class PublicationController {
     // Créer une publication
     @PostMapping("/create")
     public ResponseEntity<PublicationDTO> createPublication(
-            @RequestParam("image") MultipartFile image,
+            @RequestPart(value = "image", required = false) MultipartFile image,
             @RequestParam("textContent") String textContent,
             @RequestParam("tags") List<String> tags, // Modification ici
             @RequestParam("idUser") String idUser) {

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PublicationDTO {
-    private String id;                // ID de la publication
+    private String id;
     private String userId;            // ID de l'utilisateur
     private String textContent;       // Contenu textuel
     private List<String> tags;        // Liste des hashtags
