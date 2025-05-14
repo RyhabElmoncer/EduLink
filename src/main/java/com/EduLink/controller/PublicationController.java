@@ -60,7 +60,22 @@ public class PublicationController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // 500 for other errors
         }
     }
+    @PostMapping("/{publicationId}/comments")
+    public PublicationDTO addCommentToPublication(
+            @PathVariable String publicationId,
+            @RequestBody CommentDTO commentDTO
+    ) {
+        return publicationService.addComment(publicationId, commentDTO);
+    }
 
+    // Supprimer un commentaire d'une publication
+    @DeleteMapping("/{publicationId}/comments/{commentId}")
+    public PublicationDTO deleteCommentFromPublication(
+            @PathVariable String publicationId,
+            @PathVariable String commentId
+    ) {
+        return publicationService.deleteComment(publicationId, commentId);
+    }
     // Supprimer une publication
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePublication(@PathVariable String id) {
@@ -88,14 +103,7 @@ public class PublicationController {
         return new ResponseEntity<>(updatedPublication, HttpStatus.OK);
     }
 
-    // Ajouter un commentaire à une publication
-    @PostMapping("/{id}/comment")
-    public ResponseEntity<PublicationDTO> addCommentToPublication(
-            @PathVariable String id,
-            @RequestBody CommentDTO commentDTO) {
-        PublicationDTO updatedPublication = publicationService.addCommentToPublication(id, commentDTO);
-        return new ResponseEntity<>(updatedPublication, HttpStatus.OK);
-    }
+
 
 
 

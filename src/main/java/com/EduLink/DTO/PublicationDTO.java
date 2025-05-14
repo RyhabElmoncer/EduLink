@@ -13,6 +13,9 @@ public class PublicationDTO {
     private String imageUrl;          // URL de l'image jointe (facultatif)
     private List<String> likes;       // Liste des IDs des utilisateurs ayant liké
     private long timestamp;
-    // Date de création ou mise à
+    private String firstName;
+    private String lastName;
+    private List<CommentDTO> comments; // Ajout de la liste des commentaires
+
 
 }

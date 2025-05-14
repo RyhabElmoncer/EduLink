@@ -8,18 +8,12 @@ import com.EduLink.token.Token;
 import com.EduLink.token.TokenRepository;
 import com.EduLink.token.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,8 +31,6 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   // @Autowired
   // private NotificationServiceImplementation notificationService;
-  @Autowired
-  private JavaMailSender emailSender;
 
   public AuthenticationResponse signup(RegisterRequest request) {
     if (repository.existsByEmail(request.getEmail())) {

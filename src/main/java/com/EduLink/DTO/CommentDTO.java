@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+// CommentDTO.java
 public class CommentDTO {
+    private String id;
     private String userId;
+    private String userFirstName;
+    private String userLastName;
     private String text;
     private long timestamp;
 }

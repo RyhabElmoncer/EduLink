@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicationService {
@@ -121,23 +123,36 @@ public class PublicationService {
 
 
 
-    private PublicationDTO mapToDTO(Publication publication) {
+    public PublicationDTO mapToDTO(Publication publication) {
         PublicationDTO publicationDTO = new PublicationDTO();
         publicationDTO.setId(publication.getId());
         publicationDTO.setTextContent(publication.getTextContent());
         publicationDTO.setTags(publication.getTags());
         publicationDTO.setImageUrl(publication.getImageUrl());
         publicationDTO.setTimestamp(publication.getTimestamp());
-
-        // Vérifiez si l'utilisateur est null
+        publicationDTO.setLikes(publication.getLikes());  // Ajoutez les likes ici
+        if (publication.getComments() != null) {
+            List<CommentDTO> commentDTOs = publication.getComments().stream()
+                    .map(comment -> new CommentDTO(
+                            comment.getId(),
+                            comment.getUserId(),
+                            comment.getUserFirstName(),
+                            comment.getUserLastName(),
+                            comment.getText(),
+                            comment.getTimestamp()))
+                    .collect(Collectors.toList());
+            publicationDTO.setComments(commentDTOs);
+        }
         if (publication.getUser() != null) {
             publicationDTO.setUserId(publication.getUser().getId());
-        } else {
-            publicationDTO.setUserId(null); // Ou toute autre valeur par défaut
+            publicationDTO.setFirstName(publication.getUser().getFirstName());
+            publicationDTO.setLastName(publication.getUser().getLastName());
         }
+
 
         return publicationDTO;
     }
+
 
     private Publication mapToEntity(PublicationDTO publicationDTO) {
         Publication publication = new Publication();
@@ -196,5 +211,45 @@ public class PublicationService {
         comment.setTimestamp(System.currentTimeMillis());
         return comment;
     }
+    public PublicationDTO addComment(String publicationId, CommentDTO commentDTO) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication non trouvée"));
 
+        // Récupérer l'utilisateur qui commente
+        User user = userRepository.findById(commentDTO.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+
+        Comment comment = new Comment();
+        comment.setId(UUID.randomUUID().toString());
+        comment.setUserId(user.getId());
+        comment.setUserFirstName(user.getFirstName());
+        comment.setUserLastName(user.getLastName());
+        comment.setText(commentDTO.getText());
+        comment.setTimestamp(System.currentTimeMillis());
+
+        if (publication.getComments() == null) {
+            publication.setComments(new ArrayList<>());
+        }
+
+        publication.getComments().add(comment);
+        publication = publicationRepository.save(publication);
+
+        return mapToDTO(publication);
+    }
+
+    public PublicationDTO deleteComment(String publicationId, String commentId) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication non trouvée"));
+
+        if (publication.getComments() != null) {
+            publication.setComments(
+                    publication.getComments().stream()
+                            .filter(c -> !c.getId().equals(commentId))
+                            .collect(Collectors.toList())
+            );
+        }
+
+        publication = publicationRepository.save(publication);
+        return mapToDTO(publication);
+    }
 }
