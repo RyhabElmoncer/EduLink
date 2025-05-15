@@ -1,13 +1,11 @@
 package com.EduLink.auth;
 
+import com.EduLink.Models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -30,7 +28,11 @@ public class AuthenticationController {
   ) {
     return ResponseEntity.ok(service.authenticate(request));
   }
-
+  @GetMapping("/me")
+  public ResponseEntity<User> getCurrentUser() {
+    User user = service.getCurrentUserInfo();
+    return ResponseEntity.ok(user);
+  }
   @PostMapping("/refresh-token")
   public void refreshToken(
       HttpServletRequest request,

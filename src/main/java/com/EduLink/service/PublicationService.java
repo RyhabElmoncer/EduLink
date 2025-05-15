@@ -203,6 +203,19 @@ public class PublicationService {
 
         return mapToDTO(publication);
     }
+    public List<PublicationDTO> getPublicationsByUserId(String userId) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("L'identifiant de l'utilisateur ne peut pas être nul ou vide");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé pour l'ID : " + userId));
+
+        List<Publication> publications = publicationRepository.findByUser(user);
+        return publications.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
     private Comment mapCommentDTOToEntity(CommentDTO commentDTO) {
         Comment comment = new Comment();

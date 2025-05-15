@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +107,19 @@ public class AuthenticationService {
     tokenRepository.save(token);
   }
 
+  public User getCurrentUserInfo() {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+    String email;
+    if (principal instanceof UserDetails) {
+      email = ((UserDetails) principal).getUsername();
+    } else {
+      email = principal.toString();
+    }
+
+    return repository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email: " + email));
+  }
 
   private void revokeAllUserTokens(User user) {
     var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());

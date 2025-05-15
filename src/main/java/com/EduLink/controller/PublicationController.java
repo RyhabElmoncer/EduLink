@@ -36,6 +36,11 @@ public class PublicationController {
         PublicationDTO createdPublication = publicationService.createPublication(publicationDTO, image, idUser);
         return new ResponseEntity<>(createdPublication, HttpStatus.CREATED);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PublicationDTO>> getPublicationsByUser(@PathVariable String userId) {
+        List<PublicationDTO> publications = publicationService.getPublicationsByUserId(userId);
+        return new ResponseEntity<>(publications, HttpStatus.OK);
+    }
 
     // Mettre à jour une publication
     @PutMapping("/update/{id}")
