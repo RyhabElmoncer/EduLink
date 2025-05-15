@@ -7,13 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/auth/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @GetMapping
+    public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers();
+    }
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable String userId,

@@ -50,6 +50,10 @@ public class GroupService {
         group.getMembers().add(user);
         groupRepository.save(group);
     }
+    public List<GroupDTO> getAllGroups() {
+        List<Group> groups = groupRepository.findAll();
+        return groups.stream().map(GroupDTO::new).collect(Collectors.toList());
+    }
 
     public void leaveGroup(String groupId, String userId) {
         Group group = groupRepository.findById(groupId)

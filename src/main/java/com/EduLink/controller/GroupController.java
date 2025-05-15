@@ -46,5 +46,9 @@ public class GroupController {
         List<MessageDTO> messages = groupService.getGroupMessages(groupId);
         return ResponseEntity.ok(messages);
     }
+    @GetMapping
+    public List<GroupDTO> getAllGroups() {
+        return groupService.getAllGroups();
+    }
 }
 
