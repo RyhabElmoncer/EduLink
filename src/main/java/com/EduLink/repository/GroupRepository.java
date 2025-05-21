@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface GroupRepository extends MongoRepository<Group, String> {
+
     // Recherche de groupe par nom (ajoutez cette méthode si nécessaire pour une fonctionnalité de recherche)
     List<Group> findByNameContainingIgnoreCase(String name);
 }

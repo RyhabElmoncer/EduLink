@@ -32,6 +32,7 @@ public class SecurityConfiguration {
             "/api/v1/auth/authenticate",
             "/api/v1/auth/register",
             "/api/v1/auth/publications",
+            "/api/v1/auth/messages",
             "/images/**",
             "/swagger-ui/**",        // Swagger UI
             "/v3/api-docs/**",       // OpenAPI docs

@@ -7,6 +7,7 @@ import com.EduLink.Models.Group;
 import com.EduLink.Models.Message;
 import com.EduLink.Models.User;
 import com.EduLink.repository.GroupRepository;
+import com.EduLink.repository.MessageRepository;
 import com.EduLink.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -25,6 +26,8 @@ public class GroupService {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+  @Autowired
+    private MessageRepository messageRepository;
 
     public GroupDTO createGroup(GroupDTO groupDTO) {
         Group group = Group.builder()
@@ -67,6 +70,9 @@ public class GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new ResourceNotFoundException("Group not found: " + groupId));
 
+        if (messageDTO.getSender() == null || messageDTO.getSender().getId() == null) {
+            throw new IllegalArgumentException("Sender id cannot be null");
+        }
         User sender = userRepository.findById(messageDTO.getSender().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + messageDTO.getSender().getId()));
 
@@ -76,12 +82,12 @@ public class GroupService {
                 .isRead(false)
                 .sender(sender)
                 .group(group)
+                .recipient(null)  // explicite null si non utilisé
                 .build();
 
-        group.getMessages().add(message);
-        groupRepository.save(group);
+        // Sauvegarde du message via repository dédié
+        message = messageRepository.save(message);
 
-        // Notifier tous les membres du groupe
         messagingTemplate.convertAndSend("/topic/groups/" + groupId, new MessageDTO(message));
 
         return new MessageDTO(message);
@@ -93,4 +99,5 @@ public class GroupService {
 
         return group.getMessages().stream().map(MessageDTO::new).collect(Collectors.toList());
     }
+
 }
