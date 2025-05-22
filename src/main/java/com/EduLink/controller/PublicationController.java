@@ -87,6 +87,11 @@ public class PublicationController {
         publicationService.deletePublication(id);
         return new ResponseEntity<>("Publication supprimée avec succès", HttpStatus.NO_CONTENT);
     }
+    @DeleteMapping("/{publicationId}/like/{userId}")
+    public ResponseEntity<PublicationDTO> removeLike(@PathVariable String publicationId, @PathVariable String userId) {
+        PublicationDTO updatedPublication = publicationService.removeLikeFromPublication(publicationId, userId);
+        return ResponseEntity.ok(updatedPublication);
+    }
 
     // Obtenir une publication par ID
     @GetMapping("/{id}")

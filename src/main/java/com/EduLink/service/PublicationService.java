@@ -265,4 +265,16 @@ public class PublicationService {
         publication = publicationRepository.save(publication);
         return mapToDTO(publication);
     }
+    public PublicationDTO removeLikeFromPublication(String publicationId, String userId) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication non trouvée pour l'identifiant fourni : " + publicationId));
+
+        if (publication.getLikes() != null && publication.getLikes().contains(userId)) {
+            publication.getLikes().remove(userId);
+            publication = publicationRepository.save(publication);
+        }
+
+        return mapToDTO(publication);
+    }
+
 }
