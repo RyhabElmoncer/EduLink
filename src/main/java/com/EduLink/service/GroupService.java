@@ -92,6 +92,20 @@ public class GroupService {
 
         return new MessageDTO(message);
     }
+    public List<MessageDTO> getAllMessagesWithSender(String groupId) {
+        // Vérifie si le groupe existe
+        if (!groupRepository.existsById(groupId)) {
+            throw new ResourceNotFoundException("Group not found: " + groupId);
+        }
+
+        // Récupère tous les messages du groupe avec leurs expéditeurs
+        List<Message> messages = messageRepository.findByGroupIdOrderByTimestampAsc(groupId);
+
+        // Transforme chaque message en MessageDTO, qui inclut le sender
+        return messages.stream()
+                .map(MessageDTO::new)
+                .collect(Collectors.toList());
+    }
 
     public List<MessageDTO> getGroupMessages(String groupId) {
         Group group = groupRepository.findById(groupId)

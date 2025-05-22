@@ -50,5 +50,10 @@ public class GroupController {
     public List<GroupDTO> getAllGroups() {
         return groupService.getAllGroups();
     }
+    // Endpoint pour récupérer tous les messages d’un groupe avec sender
+    @GetMapping("/{groupId}/getAllMessagesWithSender")
+    public List<MessageDTO> getAllMessagesWithSender(@PathVariable String groupId) {
+        return groupService.getAllMessagesWithSender(groupId);
+    }
 }
 

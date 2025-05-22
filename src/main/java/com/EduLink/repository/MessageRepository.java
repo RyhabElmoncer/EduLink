@@ -18,5 +18,7 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 
     // Récupérer les messages d'un groupe
     List<Message> findByGroupId(String groupId);
+    List<Message> findByGroupIdOrderByTimestampAsc(String groupId);
+
 }
 
